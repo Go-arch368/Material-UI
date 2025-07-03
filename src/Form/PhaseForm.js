@@ -12,7 +12,62 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import styled from 'styled-components';
 
+// Styled Components
+const FormWrapper = styled.form`
+  width: 100%;
+  padding: 10px;
+`;
+
+const Section = styled.div`
+  margin-bottom: 24px;
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+`;
+
+const Dot = styled.div`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #F6C013;
+  margin-right: 8px;
+`;
+
+const BoldText = styled(Typography)`
+  font-weight: bold;
+`;
+
+const DateFieldsWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  max-width: 100%;
+`;
+
+const DateFieldBox = styled.div`
+  width: 100%;
+  max-width: 600px;
+  padding-right: 16px;
+`;
+
+const LabelWithIcon = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ButtonRow = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 32px;
+`;
+
+// Yup schema
 const schema = yup.object().shape({
   cancellationDate: yup.date().nullable(),
   targetedAwardDate: yup.date().nullable(),
@@ -48,7 +103,7 @@ const PhaseForm = () => {
   };
 
   const renderDateField = (label, name) => (
-    <Box sx={{ width: '100%', maxWidth: 600, pr: 2 }}>
+    <DateFieldBox>
       <Controller
         name={name}
         control={control}
@@ -56,14 +111,14 @@ const PhaseForm = () => {
           <DatePicker
             {...field}
             label={
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <LabelWithIcon>
                 {label}
                 <Tooltip title={`More info about ${label}`}>
-                  <IconButton size="small" sx={{ ml: 0.5 }}>
+                  <IconButton size="small" style={{ marginLeft: 4 }}>
                     <HelpOutlineIcon fontSize="inherit" />
                   </IconButton>
                 </Tooltip>
-              </Box>
+              </LabelWithIcon>
             }
             format="DD/MM/YYYY"
             value={field.value || null}
@@ -78,32 +133,24 @@ const PhaseForm = () => {
           />
         )}
       />
-    </Box>
+    </DateFieldBox>
   );
 
   const renderSection = (title, fields) => (
-    <Box sx={{ mb: 3 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-        <Box sx={{
-          width: 8, height: 8, borderRadius: '50%',
-          backgroundColor: '#F6C013', mr: 1
-        }} />
-        <Typography sx={{ fontWeight: 'bold' }}>{title}</Typography>
-      </Box>
-      <Box sx={{
-        display: 'flex',
-        flexWrap: 'wrap',
-        gap: 2,
-        maxWidth: '100%',
-      }}>
+    <Section>
+      <SectionHeader>
+        <Dot />
+        <BoldText>{title}</BoldText>
+      </SectionHeader>
+      <DateFieldsWrapper>
         {fields.map(([label, name]) => renderDateField(label, name))}
-      </Box>
-    </Box>
+      </DateFieldsWrapper>
+    </Section>
   );
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <form onSubmit={handleSubmit(onSubmit)} style={{ width: '100%', padding: '20px' }}>
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
         {renderSection('Staging', [
           ['Cancellation Date', 'cancellationDate'],
           ['Targeted Award Date', 'targetedAwardDate'],
@@ -125,11 +172,11 @@ const PhaseForm = () => {
           ['Award Phase End Date', 'awardEnd'],
         ])}
 
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 4 }}>
+        <ButtonRow>
           <Button variant="outlined">Cancel</Button>
           <Button variant="contained" type="submit">Save</Button>
-        </Box>
-      </form>
+        </ButtonRow>
+      </FormWrapper>
     </LocalizationProvider>
   );
 };
