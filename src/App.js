@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import PhaseForm from './Form/PhaseForm';
+import PhaseForm from "./Components/Form/PhaseForm"
 
 function App() {
   return (

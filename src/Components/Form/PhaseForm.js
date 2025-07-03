@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Typography,
-  Box,
   Button,
   Tooltip,
   IconButton
@@ -13,6 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import styled from 'styled-components';
+import axios from 'axios'; // ✅ API library
 
 // Styled Components
 const FormWrapper = styled.form`
@@ -82,7 +82,7 @@ const schema = yup.object().shape({
 });
 
 const PhaseForm = () => {
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       cancellationDate: null,
       targetedAwardDate: null,
@@ -98,12 +98,21 @@ const PhaseForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log('Submitted:', data);
+  
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', data);
+      console.log('Success:', response.data);
+      alert('Form submitted successfully!');
+      reset(); 
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Form submission failed.');
+    }
   };
 
   const renderDateField = (label, name) => (
-    <DateFieldBox>
+    <DateFieldBox key={name}>
       <Controller
         name={name}
         control={control}
@@ -137,7 +146,7 @@ const PhaseForm = () => {
   );
 
   const renderSection = (title, fields) => (
-    <Section>
+    <Section key={title}>
       <SectionHeader>
         <Dot />
         <BoldText>{title}</BoldText>
