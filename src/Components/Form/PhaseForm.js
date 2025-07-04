@@ -12,9 +12,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import styled from 'styled-components';
-import axios from 'axios'; // ✅ API library
+import axios from 'axios'; 
 
-// Styled Components
 const FormWrapper = styled.form`
   width: 100%;
   padding: 10px;
