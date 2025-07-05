@@ -14,6 +14,12 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import styled from 'styled-components';
 import axios from 'axios'; 
 
+const ScrollContainer = styled.div`
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+`;
+
 const FormWrapper = styled.form`
   width: 100%;
   padding: 10px;
@@ -97,7 +103,6 @@ const PhaseForm = () => {
     resolver: yupResolver(schema),
   });
 
-  
   const onSubmit = async (data) => {
     try {
       const response = await axios.post('https://jsonplaceholder.typicode.com/posts', data);
@@ -158,33 +163,35 @@ const PhaseForm = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-        {renderSection('Staging', [
-          ['Cancellation Date', 'cancellationDate'],
-          ['Targeted Award Date', 'targetedAwardDate'],
-        ])}
-        {renderSection('Document Development Phase', [
-          ['Document Development Phase Start Date', 'documentStart'],
-          ['Document Development Phase End Date', 'documentEnd'],
-        ])}
-        {renderSection('Market Phase', [
-          ['Market Phase Start Date', 'marketStart'],
-          ['Market Phase End Date', 'marketEnd'],
-        ])}
-        {renderSection('Evaluation Phase', [
-          ['Evaluation Phase Start Date', 'evaluationStart'],
-          ['Evaluation Phase End Date', 'evaluationEnd'],
-        ])}
-        {renderSection('Award Phase', [
-          ['Award Phase Start Date', 'awardStart'],
-          ['Award Phase End Date', 'awardEnd'],
-        ])}
+      <ScrollContainer>
+        <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+          {renderSection('Staging', [
+            ['Cancellation Date', 'cancellationDate'],
+            ['Targeted Award Date', 'targetedAwardDate'],
+          ])}
+          {renderSection('Document Development Phase', [
+            ['Document Development Phase Start Date', 'documentStart'],
+            ['Document Development Phase End Date', 'documentEnd'],
+          ])}
+          {renderSection('Market Phase', [
+            ['Market Phase Start Date', 'marketStart'],
+            ['Market Phase End Date', 'marketEnd'],
+          ])}
+          {renderSection('Evaluation Phase', [
+            ['Evaluation Phase Start Date', 'evaluationStart'],
+            ['Evaluation Phase End Date', 'evaluationEnd'],
+          ])}
+          {renderSection('Award Phase', [
+            ['Award Phase Start Date', 'awardStart'],
+            ['Award Phase End Date', 'awardEnd'],
+          ])}
 
-        <ButtonRow>
-          <Button variant="outlined">Cancel</Button>
-          <Button variant="contained" type="submit">Save</Button>
-        </ButtonRow>
-      </FormWrapper>
+          <ButtonRow>
+            <Button variant="outlined">Cancel</Button>
+            <Button variant="contained" type="submit">Save</Button>
+          </ButtonRow>
+        </FormWrapper>
+      </ScrollContainer>
     </LocalizationProvider>
   );
 };
